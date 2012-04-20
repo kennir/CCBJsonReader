@@ -10,6 +10,7 @@
 
 #include "cocos2d.h"
 #include "CCBJsonReader.h"
+#include "TestHeader.h"
 
 USING_NS_CC;
 
@@ -92,6 +93,9 @@ bool AppDelegate::applicationDidFinishLaunching()
 	// create a scene. it's an autorelease object
     //	CCScene *pScene = ccbjson::Reader::sceneWithNodeGraphFromFile("HelloCocosBuilder.ccbjson");
     //    CCScene* pScene = CCBJsonReader::sceneWithNodeGraphFromFile("HelloCocosBuilder.ccbjson");
+    
+    
+    CCBJsonRegisterCustomClass("TestHeader", (NodeFunc)(&TestHeader::nodeFunc));
     CCScene* pScene = CCBJsonReader::sceneWithNodeGraphFromFile("TestLabels.ccbjson");
     
 

@@ -22,6 +22,7 @@ typedef cocos2d::CCNode* (* NodeFunc)(const Json::Value& value);
 #define CCBJsonRegisterCustomClass(name,class)  \
     CCBJsonCustomClass::sharedCustomClass()->addCustomClassForName((name),(class))
 
+
 class CCBJsonCustomClass {
 public:
     static CCBJsonCustomClass* sharedCustomClass();

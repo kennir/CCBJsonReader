@@ -87,6 +87,7 @@ static const unsigned int _hashCCBFile = CCBJsonUtils::hashFromString("ccbFile")
 
 // CCMenuItem
 static const unsigned int _hashIsEnabled = CCBJsonUtils::hashFromString("isEnabled");
+static const unsigned int _hashBlock = CCBJsonUtils::hashFromString("block");
 // CCMenuItemImage
 static const unsigned int _hashNormalSpriteFrame = CCBJsonUtils::hashFromString("normalSpriteFrame");
 static const unsigned int _hashSelectedSpriteFrame = CCBJsonUtils::hashFromString("selectedSpriteFrame");
@@ -189,6 +190,9 @@ CCNode* CCBJsonReader::nodeFromBaseClass(const std::string &baseClass, const std
         NodeFunc func = CCBJsonCustomClass::sharedCustomClass()->customClassForName(customClass);
         if(func)
             return (*func)(value);
+        else {
+            CCLOG("CCBJsonReader: Can't create custom class for: %s",customClass.c_str());
+        }
     }
     
     CCNode* node = NULL;
@@ -428,6 +432,7 @@ void CCBJsonReader::readPropertyForNode(cocos2d::CCNode *node, const Json::Value
     } else if(nameHash == _hashNormalSpriteFrame) {
     } else if(nameHash == _hashSelectedSpriteFrame) {
     } else if(nameHash == _hashDisabledSpriteFrame) {
+    } else if(nameHash == _hashBlock) {
     } else {
         CCLOG("Unknown property named: %s",name.c_str());
     }
@@ -537,6 +542,7 @@ CCMenuItemImage* CCBJsonReader::menuItemImageFromValue(const Json::Value &value)
     Value normal = findPropertyByName(properties, "normalSpriteFrame");
     Value selected = findPropertyByName(properties, "selectedSpriteFrame");
     Value disabled = findPropertyByName(properties, "disabledSpriteFrame");
+    Value block = findPropertyByName(properties, "block");
     
     CCSpriteFrame* normalFrame = spriteFrameFromValue(normal["value"]);
     CCSpriteFrame* selectedFrame = spriteFrameFromValue(selected["value"]);
@@ -546,37 +552,25 @@ CCMenuItemImage* CCBJsonReader::menuItemImageFromValue(const Json::Value &value)
     CCSprite* selectedSprite = (selectedFrame) ? CCSprite::spriteWithSpriteFrame(selectedFrame) : NULL;
     CCSprite* disabledSprite = (disabledFrame) ? CCSprite::spriteWithSpriteFrame(disabledFrame) : NULL;
     
+    CCObject* target = NULL;
+    SEL_MenuHandler handler = NULL;
+    std::string selector = block["value"][0].asString();
+    if(!selector.empty()) {
+        target = CCBJsonSelectorManager::sharedSelectorManager();
+        handler = menu_selector(CCBJsonSelectorManager::defaultMenuHandler);
+    }
+    
     item = new CCMenuItemImage();
-    if(item && item->initFromNormalSprite(normalSprite, selectedSprite, disabledSprite, NULL, NULL))
+    if(item && item->initFromNormalSprite(normalSprite, selectedSprite, disabledSprite, target, handler)) {
+        CCBJsonRegisterMenuItem(item, selector);
         item->autorelease();
-    else {
+    } else {
         delete item;
         item = NULL;
     }
 
     return item;
 }
-
-
-//CCControlButton* 
-//CCBJsonReader::controlButtonFromBaseClass(const std::string &baseClass, const std::string &customClass, const Json::Value &value){
-//    CCControlButton* button = NULL;
-//
-//    const Value& properties = value["properties"];
-//    Value title = findPropertyByName(properties, "title|1");
-//    Value font = findPropertyByName(properties, "titleTTF|1");
-//    Value fontSize = findPropertyByName(properties, "titleTTFSize|1");
-//    
-//    if(!title.isNull() && !font.isNull() && !fontSize.isNull()) {
-//        button = CCControlButton::buttonWithTitleAndFontNameAndFontSize(title["value"].asString(), 
-//                                                                        font["value"].asString().c_str(), 
-//                                                                        fontSize["value"].asFloat());
-//        CC_ASSERT(button);
-//    }
-//    
-//    
-//    return button;
-//}
 
 Value CCBJsonReader::findPropertyByName(const Value &properties, const char* name) const {
     Value value;

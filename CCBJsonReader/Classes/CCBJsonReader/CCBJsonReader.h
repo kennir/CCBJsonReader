@@ -12,7 +12,7 @@
 #include "cocos2d.h"
 #include "json/json.h"
 #include "CCBJsonCustomClass.h"
-
+#include "CCBJsonSelectorManager.h"
 
 
 
@@ -46,7 +46,9 @@ public:
 protected:
     cocos2d::CCNode* nodeFromValue(const Json::Value& value); 
     // create node from base class
-    cocos2d::CCNode* nodeFromBaseClass(const std::string& baseClass,const std::string& customClass,const Json::Value& value);
+    cocos2d::CCNode* nodeFromBaseClass(const std::string& baseClass,
+                                       const std::string& customClass,
+                                       const Json::Value& value);
     
     void readPropertyForNode(cocos2d::CCNode* node,const Json::Value& property);
     
