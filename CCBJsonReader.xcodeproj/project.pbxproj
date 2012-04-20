@@ -140,6 +140,9 @@
 		BE839B5D154159BA006EDBD6 /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE839B5C154159BA006EDBD6 /* RootViewController.mm */; };
 		BE839B61154159BA006EDBD6 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE839B60154159BA006EDBD6 /* AppDelegate.cpp */; };
 		BE839B64154159BA006EDBD6 /* HelloWorldScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE839B63154159BA006EDBD6 /* HelloWorldScene.cpp */; };
+		BEF8A0331541BA8600C26EED /* CCBJsonReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BEF8A02F1541BA8600C26EED /* CCBJsonReader.cpp */; };
+		BEF8A0341541BA8600C26EED /* CCBJsonUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BEF8A0311541BA8600C26EED /* CCBJsonUtils.cpp */; };
+		BEF8A0371541BAD100C26EED /* jsoncpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BEF8A0361541BAD100C26EED /* jsoncpp.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -421,6 +424,13 @@
 		BE839B60154159BA006EDBD6 /* AppDelegate.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AppDelegate.cpp; path = Classes/AppDelegate.cpp; sourceTree = "<group>"; };
 		BE839B62154159BA006EDBD6 /* HelloWorldScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HelloWorldScene.h; path = Classes/HelloWorldScene.h; sourceTree = "<group>"; };
 		BE839B63154159BA006EDBD6 /* HelloWorldScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = HelloWorldScene.cpp; path = Classes/HelloWorldScene.cpp; sourceTree = "<group>"; };
+		BEF8A02F1541BA8600C26EED /* CCBJsonReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CCBJsonReader.cpp; path = Classes/CCBJsonReader/CCBJsonReader.cpp; sourceTree = "<group>"; };
+		BEF8A0301541BA8600C26EED /* CCBJsonReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCBJsonReader.h; path = Classes/CCBJsonReader/CCBJsonReader.h; sourceTree = "<group>"; };
+		BEF8A0311541BA8600C26EED /* CCBJsonUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CCBJsonUtils.cpp; path = Classes/CCBJsonReader/CCBJsonUtils.cpp; sourceTree = "<group>"; };
+		BEF8A0321541BA8600C26EED /* CCBJsonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCBJsonUtils.h; path = Classes/CCBJsonReader/CCBJsonUtils.h; sourceTree = "<group>"; };
+		BEF8A0361541BAD100C26EED /* jsoncpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jsoncpp.cpp; path = Classes/jsoncpp/jsoncpp.cpp; sourceTree = "<group>"; };
+		BEF8A0391541BADE00C26EED /* json-forwards.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "json-forwards.h"; path = "Classes/jsoncpp/json/json-forwards.h"; sourceTree = "<group>"; };
+		BEF8A03A1541BADE00C26EED /* json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = json.h; path = Classes/jsoncpp/json/json.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1014,12 +1024,43 @@
 		BE839B5E154159BA006EDBD6 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				BEF8A0351541BAC900C26EED /* jsoncpp */,
+				BEF8A02D1541BA5000C26EED /* CCBJsonReader */,
 				BE839B5F154159BA006EDBD6 /* AppDelegate.h */,
 				BE839B60154159BA006EDBD6 /* AppDelegate.cpp */,
 				BE839B62154159BA006EDBD6 /* HelloWorldScene.h */,
 				BE839B63154159BA006EDBD6 /* HelloWorldScene.cpp */,
 			);
 			name = Classes;
+			sourceTree = "<group>";
+		};
+		BEF8A02D1541BA5000C26EED /* CCBJsonReader */ = {
+			isa = PBXGroup;
+			children = (
+				BEF8A02F1541BA8600C26EED /* CCBJsonReader.cpp */,
+				BEF8A0301541BA8600C26EED /* CCBJsonReader.h */,
+				BEF8A0311541BA8600C26EED /* CCBJsonUtils.cpp */,
+				BEF8A0321541BA8600C26EED /* CCBJsonUtils.h */,
+			);
+			name = CCBJsonReader;
+			sourceTree = "<group>";
+		};
+		BEF8A0351541BAC900C26EED /* jsoncpp */ = {
+			isa = PBXGroup;
+			children = (
+				BEF8A0381541BAD400C26EED /* json */,
+				BEF8A0361541BAD100C26EED /* jsoncpp.cpp */,
+			);
+			name = jsoncpp;
+			sourceTree = "<group>";
+		};
+		BEF8A0381541BAD400C26EED /* json */ = {
+			isa = PBXGroup;
+			children = (
+				BEF8A0391541BADE00C26EED /* json-forwards.h */,
+				BEF8A03A1541BADE00C26EED /* json.h */,
+			);
+			name = json;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1207,6 +1248,9 @@
 				BE839B5D154159BA006EDBD6 /* RootViewController.mm in Sources */,
 				BE839B61154159BA006EDBD6 /* AppDelegate.cpp in Sources */,
 				BE839B64154159BA006EDBD6 /* HelloWorldScene.cpp in Sources */,
+				BEF8A0331541BA8600C26EED /* CCBJsonReader.cpp in Sources */,
+				BEF8A0341541BA8600C26EED /* CCBJsonUtils.cpp in Sources */,
+				BEF8A0371541BAD100C26EED /* jsoncpp.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1233,6 +1277,7 @@
 					"\"$(PROJECT_NAME)/libs/cocos2dx\"",
 					"\"$(PROJECT_NAME)/libs/CocosDenshion/include\"",
 					"\"$(SDKROOT)/usr/include/libxml2\"",
+					"\"$(PROJECT_NAME)/Classes/jsoncpp\"",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				SDKROOT = iphoneos;
@@ -1256,6 +1301,7 @@
 					"\"$(PROJECT_NAME)/libs/cocos2dx\"",
 					"\"$(PROJECT_NAME)/libs/CocosDenshion/include\"",
 					"\"$(SDKROOT)/usr/include/libxml2\"",
+					"\"$(PROJECT_NAME)/Classes/jsoncpp\"",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
@@ -1320,6 +1366,7 @@
 				BE839B69154159BA006EDBD6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -9,7 +9,7 @@
 #include "AppDelegate.h"
 
 #include "cocos2d.h"
-#include "HelloWorldScene.h"
+#include "CCBJsonReader.h"
 
 USING_NS_CC;
 
@@ -90,7 +90,12 @@ bool AppDelegate::applicationDidFinishLaunching()
 	pDirector->setAnimationInterval(1.0 / 60);
 
 	// create a scene. it's an autorelease object
-	CCScene *pScene = HelloWorld::scene();
+    //	CCScene *pScene = ccbjson::Reader::sceneWithNodeGraphFromFile("HelloCocosBuilder.ccbjson");
+    //    CCScene* pScene = CCBJsonReader::sceneWithNodeGraphFromFile("HelloCocosBuilder.ccbjson");
+    CCScene* pScene = CCBJsonReader::sceneWithNodeGraphFromFile("TestLabels.ccbjson");
+    
+
+
 
 	// run
 	pDirector->runWithScene(pScene);
