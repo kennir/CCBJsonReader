@@ -11,10 +11,9 @@
 
 #include "cocos2d.h"
 #include "json/json.h"
+#include "CCBJsonCustomClass.h"
 
 
-
-typedef cocos2d::CCNode* (* NewCustomNode)(const Json::Value& value);
 
 
 class CCBJsonReader {
@@ -43,10 +42,7 @@ public:
     bool initWithFile(const char* file);
     cocos2d::CCNode* getNodeGraph() const { return nodeGraph_; }
     
-    void registerCustomClass(const std::string& customClass,NewCustomNode nodeFunc) {
-        customNodes_[customClass] = nodeFunc;
-    }
-    
+
 protected:
     cocos2d::CCNode* nodeFromValue(const Json::Value& value); 
     // create node from base class
@@ -70,8 +66,7 @@ protected:
     
 private:
     NodeType typeReading_;
-    
-    std::map< std::string, NewCustomNode > customNodes_;
+
 };
 
 

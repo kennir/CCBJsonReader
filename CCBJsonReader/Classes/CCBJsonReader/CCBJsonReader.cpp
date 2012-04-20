@@ -186,11 +186,9 @@ CCNode* CCBJsonReader::nodeFromValue(const Json::Value &value) {
 CCNode* CCBJsonReader::nodeFromBaseClass(const std::string &baseClass, const std::string &customClass, const Json::Value &value) {
     
     if(!customClass.empty()) {
-        std::map<std::string, NewCustomNode>::iterator it = customNodes_.find(customClass);
-        if(it != customNodes_.end()) {
-            // use custom class
-            return (*it->second)(value);
-        }
+        NodeFunc func = CCBJsonCustomClass::sharedCustomClass()->customClassForName(customClass);
+        if(func)
+            return (*func)(value);
     }
     
     CCNode* node = NULL;

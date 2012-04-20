@@ -129,6 +129,7 @@
 		BE839B5A154159BA006EDBD6 /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE839B59154159BA006EDBD6 /* AppController.mm */; };
 		BE839B5D154159BA006EDBD6 /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE839B5C154159BA006EDBD6 /* RootViewController.mm */; };
 		BE839B61154159BA006EDBD6 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE839B60154159BA006EDBD6 /* AppDelegate.cpp */; };
+		BEDAA29E1541C68D00C7E0F6 /* CCBJsonCustomClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BEDAA29D1541C68D00C7E0F6 /* CCBJsonCustomClass.cpp */; };
 		BEF8A0331541BA8600C26EED /* CCBJsonReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BEF8A02F1541BA8600C26EED /* CCBJsonReader.cpp */; };
 		BEF8A0341541BA8600C26EED /* CCBJsonUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BEF8A0311541BA8600C26EED /* CCBJsonUtils.cpp */; };
 		BEF8A0371541BAD100C26EED /* jsoncpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BEF8A0361541BAD100C26EED /* jsoncpp.cpp */; };
@@ -465,6 +466,8 @@
 		BE839B5C154159BA006EDBD6 /* RootViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = RootViewController.mm; path = ios/RootViewController.mm; sourceTree = "<group>"; };
 		BE839B5F154159BA006EDBD6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Classes/AppDelegate.h; sourceTree = "<group>"; };
 		BE839B60154159BA006EDBD6 /* AppDelegate.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AppDelegate.cpp; path = Classes/AppDelegate.cpp; sourceTree = "<group>"; };
+		BEDAA29B1541C65F00C7E0F6 /* CCBJsonCustomClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCBJsonCustomClass.h; path = Classes/CCBJsonReader/CCBJsonCustomClass.h; sourceTree = "<group>"; };
+		BEDAA29D1541C68D00C7E0F6 /* CCBJsonCustomClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CCBJsonCustomClass.cpp; path = Classes/CCBJsonReader/CCBJsonCustomClass.cpp; sourceTree = "<group>"; };
 		BEF8A02F1541BA8600C26EED /* CCBJsonReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CCBJsonReader.cpp; path = Classes/CCBJsonReader/CCBJsonReader.cpp; sourceTree = "<group>"; };
 		BEF8A0301541BA8600C26EED /* CCBJsonReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCBJsonReader.h; path = Classes/CCBJsonReader/CCBJsonReader.h; sourceTree = "<group>"; };
 		BEF8A0311541BA8600C26EED /* CCBJsonUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CCBJsonUtils.cpp; path = Classes/CCBJsonReader/CCBJsonUtils.cpp; sourceTree = "<group>"; };
@@ -1198,6 +1201,8 @@
 				BEF8A0301541BA8600C26EED /* CCBJsonReader.h */,
 				BEF8A0311541BA8600C26EED /* CCBJsonUtils.cpp */,
 				BEF8A0321541BA8600C26EED /* CCBJsonUtils.h */,
+				BEDAA29B1541C65F00C7E0F6 /* CCBJsonCustomClass.h */,
+				BEDAA29D1541C68D00C7E0F6 /* CCBJsonCustomClass.cpp */,
 			);
 			name = CCBJsonReader;
 			sourceTree = "<group>";
@@ -1461,6 +1466,7 @@
 				BEF8A0331541BA8600C26EED /* CCBJsonReader.cpp in Sources */,
 				BEF8A0341541BA8600C26EED /* CCBJsonUtils.cpp in Sources */,
 				BEF8A0371541BAD100C26EED /* jsoncpp.cpp in Sources */,
+				BEDAA29E1541C68D00C7E0F6 /* CCBJsonCustomClass.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
