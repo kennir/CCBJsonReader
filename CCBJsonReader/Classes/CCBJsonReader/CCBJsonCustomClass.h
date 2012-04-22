@@ -23,18 +23,17 @@ typedef cocos2d::CCNode* (* NodeFunc)(const Json::Value& value);
     CCBJsonCustomClass::sharedCustomClass()->addCustomClassForName((name),(class))
 
 
-class CCBJsonCustomClass {
+class CCBJsonCustomClass 
+{
 public:
     static CCBJsonCustomClass* sharedCustomClass();
     static void purgeCustomClass();
     
-    void addCustomClassForName(const std::string& name,NodeFunc func) {
-        customNodes_[name] = func;
-    }
-    
+    void addCustomClassForName(const std::string& name,NodeFunc func) { customNodes_[name] = func; }
     void removeCustomClassForName(const std::string& name);
     
-    NodeFunc customClassForName(const std::string& name) const {
+    NodeFunc customClassForName(const std::string& name) const 
+    {
         std::map< std::string, NodeFunc >::const_iterator classIter = customNodes_.find(name);
         return (classIter == customNodes_.end()) ? NULL : classIter->second;
     }

@@ -12,9 +12,11 @@
 #include "cocos2d.h"
 #include "json/json.h"
 
-class CCBJsonUtils {
+class CCBJsonUtils 
+{
 public:
-    struct ScaleLockType {
+    struct ScaleLockType 
+    {
         float scaleX;
         float scaleY;
         bool unknown;

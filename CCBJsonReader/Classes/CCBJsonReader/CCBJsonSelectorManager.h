@@ -19,7 +19,8 @@
 #define CCBJsonClearSelectorAndHandlers() \
     CCBJsonSelectorManager::sharedSelectorManager()->clearMenuSelectorAndHandlers()
 
-class CCBJsonSelectorManager : public cocos2d::CCObject {
+class CCBJsonSelectorManager : public cocos2d::CCObject 
+{
 public:
     static CCBJsonSelectorManager* sharedSelectorManager();
     static void purgeSelectorManager();
