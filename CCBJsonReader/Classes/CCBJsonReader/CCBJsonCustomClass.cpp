@@ -10,8 +10,7 @@
 
 static CCBJsonCustomClass* _customClass = NULL;
 
-CCBJsonCustomClass* CCBJsonCustomClass::sharedCustomClass() 
-{
+CCBJsonCustomClass* CCBJsonCustomClass::sharedCustomClass() {
     if(!_customClass)
         _customClass = new CCBJsonCustomClass;
     
@@ -19,14 +18,16 @@ CCBJsonCustomClass* CCBJsonCustomClass::sharedCustomClass()
 }
 
 
-void CCBJsonCustomClass::purgeCustomClass() 
-{
+void CCBJsonCustomClass::purgeCustomClass() {
     CC_SAFE_DELETE(_customClass);
 }
 
+NodeFunc CCBJsonCustomClass::customClassForName(const std::string& name) const {
+    std::map< std::string, NodeFunc >::const_iterator classIter = customNodes_.find(name);
+    return (classIter == customNodes_.end()) ? NULL : classIter->second;
+}
 
-void CCBJsonCustomClass::removeCustomClassForName(const std::string &name) 
-{
+void CCBJsonCustomClass::removeCustomClassForName(const std::string &name) {
     std::map<std::string, NodeFunc>::iterator classIter = customNodes_.find(name);
     if(classIter != customNodes_.end())
         customNodes_.erase(classIter);

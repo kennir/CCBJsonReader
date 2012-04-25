@@ -16,11 +16,9 @@
 
 
 
-class CCBJsonReader 
-{
+class CCBJsonReader {
 public:
-    typedef enum 
-    {
+    typedef enum {
         kNodeTypeUnknown,
         kNodeTypeCCLayer,
         kNodeTypeCCLayerColor,

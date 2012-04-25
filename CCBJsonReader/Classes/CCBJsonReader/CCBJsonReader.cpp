@@ -97,8 +97,7 @@ static const unsigned int _hashDisabledSpriteFrame = CCBJsonUtils::hashFromStrin
 
 #pragma mark class functions
 
-CCNode* CCBJsonReader::nodeGraphFromFile(const char *file) 
-{
+CCNode* CCBJsonReader::nodeGraphFromFile(const char *file) {
     CCNode* node = NULL;
     CCBJsonReader reader;
     if(reader.initWithFile(file))
@@ -107,8 +106,7 @@ CCNode* CCBJsonReader::nodeGraphFromFile(const char *file)
     return node;
 }
 
-CCScene* CCBJsonReader::sceneWithNodeGraphFromFile(const char *file) 
-{
+CCScene* CCBJsonReader::sceneWithNodeGraphFromFile(const char *file) {
     CCScene* scene = CCScene::node();
     CCBJsonReader reader;
     if(reader.initWithFile(file))
@@ -119,21 +117,17 @@ CCScene* CCBJsonReader::sceneWithNodeGraphFromFile(const char *file)
 
 CCBJsonReader::CCBJsonReader() 
 : nodeGraph_(NULL)
-, typeReading_(kNodeTypeUnknown) 
-{
-    
+, typeReading_(kNodeTypeUnknown) {
 }
 
-CCBJsonReader::~CCBJsonReader() 
-{
+CCBJsonReader::~CCBJsonReader() {
     CC_SAFE_RELEASE(nodeGraph_);
 }
 
 
 
 
-bool CCBJsonReader::initWithFile(const char *file) 
-{
+bool CCBJsonReader::initWithFile(const char *file) {
     bool result = false;
     do {
         std::string fullPath(file);
@@ -160,23 +154,20 @@ bool CCBJsonReader::initWithFile(const char *file)
     return result;
 }
 
-CCNode* CCBJsonReader::nodeFromValue(const Json::Value &value)
-{
+CCNode* CCBJsonReader::nodeFromValue(const Json::Value &value) {
     CCNode* node = NULL;
     
     std::string baseClass = value["baseClass"].asString();
     std::string customClass = value["customClass"].asString();
     node = nodeFromBaseClass(baseClass, customClass, value);
-    if(node) 
-    {
+    if(node) {
         const Value& properties = value["properties"];
         for(ArrayIndex index = 0; index < properties.size(); ++index) 
             readPropertyForNode(node, properties[index]);
         
         // read children
         const Value& children = value["children"];
-        for(ArrayIndex index = 0; index < children.size(); ++index)
-        {
+        for(ArrayIndex index = 0; index < children.size(); ++index) {
             CCNode* child = nodeFromValue(children[index]);
             if(child)
                 node->addChild(child);
@@ -187,11 +178,8 @@ CCNode* CCBJsonReader::nodeFromValue(const Json::Value &value)
 }
 
 
-CCNode* CCBJsonReader::nodeFromBaseClass(const std::string &baseClass, const std::string &customClass, const Json::Value &value)
-{
-    
-    if(!customClass.empty()) 
-    {
+CCNode* CCBJsonReader::nodeFromBaseClass(const std::string &baseClass, const std::string &customClass, const Json::Value &value) {
+    if(!customClass.empty()) {
         NodeFunc func = CCBJsonCustomClass::sharedCustomClass()->customClassForName(customClass);
         if(func)
             return (*func)(value);
@@ -201,68 +189,57 @@ CCNode* CCBJsonReader::nodeFromBaseClass(const std::string &baseClass, const std
     
     CCNode* node = NULL;
     
-    if(!baseClass.compare("CCLayer")) 
-    {
+    if(!baseClass.compare("CCLayer")) {
         node = CCLayer::node();
         typeReading_ = kNodeTypeCCLayer;
         CCLOG("add CCLayer");
     } 
-    else if(!baseClass.compare("CCSprite"))
-    {
+    else if(!baseClass.compare("CCSprite")) {
         node = spriteFromValue(value);
         typeReading_ = kNodeTypeCCSprite;
         CCLOG("add CCSprite");
     }
-    else if(!baseClass.compare("CCLayerColor")) 
-    {
+    else if(!baseClass.compare("CCLayerColor")) {
         node = CCLayerColor::layerWithColor(ccc4f(255, 255, 255, 255));
         typeReading_ = kNodeTypeCCLayerColor;
         CCLOG("add CCLayerColor");
     } 
-    else if(!baseClass.compare("CCLayerGradient"))
-    {
+    else if(!baseClass.compare("CCLayerGradient")) {
         node = CCLayerGradient::layerWithColor(ccc4f(255, 255, 255, 255), ccc4f(255, 255, 255, 255));
         typeReading_ = kNodeTypeCCLayerGradient;
         CCLOG("add CCLayerGradient");
     } 
-    else if(!baseClass.compare("CCMenu"))
-    {
+    else if(!baseClass.compare("CCMenu")) {
         node = CCMenu::node();
         typeReading_ = kNodeTypeCCMenu;
         CCLOG("add CCMenu"); 
     } 
-    else if(!baseClass.compare("CCMenuItemImage"))
-    {
+    else if(!baseClass.compare("CCMenuItemImage")) {
         node = menuItemImageFromValue(value);
         typeReading_ = kNodeTypeCCMenuItemImage;
         CCLOG("add CCMenuItemImage"); 
     } 
-    else if(!baseClass.compare("CCParticleSystemQuad"))
-    {
+    else if(!baseClass.compare("CCParticleSystemQuad")) {
         node = particleSystemFromValue(value);
         typeReading_ = kNodeTypeCCParticleSystemQuad;
         CCLOG("add CCParticleSystemQuad");
     }
-    else if(!baseClass.compare("CCLabelBMFont")) 
-    {
+    else if(!baseClass.compare("CCLabelBMFont")) {
         node = labelBMFontFromValue(value);
         typeReading_ = kNodeTypeCCLabelBMFont;
         CCLOG("add CCLabelBMFont");
     }
-    else if(!baseClass.compare("CCLabelTTF")) 
-    {
+    else if(!baseClass.compare("CCLabelTTF")) {
         node = labelTTFFromValue(value);
         typeReading_ = kNodeTypeCCLabelTTF;
         CCLOG("add CCLabelBMFont");
     }
-    else if(!baseClass.compare("CCBFile"))
-    {
+    else if(!baseClass.compare("CCBFile")) {
         node = ccbFileNodeFromValue(value);
         typeReading_ = kNodeTypeCCBFile;
         CCLOG("add CCBFile");
     } 
-    else
-    {
+    else {
         CCLOG("Unknown base class: %s",baseClass.c_str());
         typeReading_ = kNodeTypeUnknown;
     }
@@ -270,8 +247,7 @@ CCNode* CCBJsonReader::nodeFromBaseClass(const std::string &baseClass, const std
 }
 
 
-void CCBJsonReader::readPropertyForNode(cocos2d::CCNode *node, const Json::Value &property) 
-{
+void CCBJsonReader::readPropertyForNode(cocos2d::CCNode *node, const Json::Value &property) {
     std::string name = property["name"].asString();
     unsigned int nameHash = CCBJsonUtils::hashFromString(name.c_str());
     
@@ -283,8 +259,7 @@ void CCBJsonReader::readPropertyForNode(cocos2d::CCNode *node, const Json::Value
         node->setContentSize(CCBJsonUtils::sizeFromValue(value));
     else if(nameHash == _hashAnchorPoint)
         node->setAnchorPoint(CCBJsonUtils::pointFromValue(value));
-    else if(nameHash == _hashScale) 
-    {
+    else if(nameHash == _hashScale) {
         CCBJsonUtils::ScaleLockType scaling = CCBJsonUtils::scaleFromValue(value);
         node->setScaleX(scaling.scaleX);
         node->setScaleY(scaling.scaleY);
@@ -297,209 +272,178 @@ void CCBJsonReader::readPropertyForNode(cocos2d::CCNode *node, const Json::Value
         node->setIsRelativeAnchorPoint(value.asBool());
     else if(nameHash == _hashVisible)
         node->setIsVisible(value.asBool());
-    else if(nameHash == _hashIsTouchEnabled)
-    {
+    else if(nameHash == _hashIsTouchEnabled) {
         CCLayer* layer = dynamic_cast<CCLayer*>(node);      
         CC_ASSERT(layer);
         layer->setIsTouchEnabled(value.asBool());
     } 
-    else if(nameHash == _hashIsAccelerometerEnabled) 
-    {
+    else if(nameHash == _hashIsAccelerometerEnabled) {
         CCLayer* layer = dynamic_cast<CCLayer*>(node);      
         CC_ASSERT(layer);
         layer->setIsAccelerometerEnabled(value.asBool());
     } 
     else if(nameHash == _hashIsMouseEnabled) { } 
     else if(nameHash == _hashIsKeyboardEnabled) { } 
-    else if(nameHash == _hashDisplayFrame) 
-    {
+    else if(nameHash == _hashDisplayFrame) {
         CCSprite* sprite = dynamic_cast<CCSprite*>(node);
         CC_ASSERT(sprite);
         sprite->setDisplayFrame(spriteFrameFromValue(value));
     } 
-    else if(nameHash == _hashFlip) 
-    {
+    else if(nameHash == _hashFlip) {
         CCSprite* sprite = dynamic_cast<CCSprite*>(node);
         CC_ASSERT(sprite);
         std::pair<bool,bool> flip = CCBJsonUtils::flipFromValue(value);
         sprite->setFlipX(flip.first);
         sprite->setFlipY(flip.second);
     } 
-    else if(nameHash == _hashOpacity) 
-    {
+    else if(nameHash == _hashOpacity) {
         CCRGBAProtocol* protocol = dynamic_cast<CCRGBAProtocol*>(node);
         CC_ASSERT(protocol);
         protocol->setOpacity(static_cast<GLbyte>(value.asUInt()));
     } 
-    else if(nameHash == _hashColor)
-    {
+    else if(nameHash == _hashColor) {
         CCRGBAProtocol* protocol = dynamic_cast<CCRGBAProtocol*>(node);
         CC_ASSERT(protocol);
         protocol->setColor(CCBJsonUtils::color3bFromValue(value));
     } 
-    else if(nameHash == _hashBlendFunc)
-    {
+    else if(nameHash == _hashBlendFunc) {
         CCBlendProtocol* protocol = dynamic_cast<CCBlendProtocol*>(node);
         CC_ASSERT(protocol);
         protocol->setBlendFunc(CCBJsonUtils::blendFuncFromValue(value));
     } 
-    else if(nameHash == _hashStartColor) 
-    {
-        if(typeReading_ == kNodeTypeCCParticleSystemQuad)
-        {
+    else if(nameHash == _hashStartColor) {
+        if(typeReading_ == kNodeTypeCCParticleSystemQuad) {
             CCParticleSystemQuad* quad = dynamic_cast<CCParticleSystemQuad*>(node);
             CC_ASSERT(quad);
             std::pair<ccColor4F,ccColor4F> colorVar = CCBJsonUtils::color4fVarFromValue(value);
             quad->setStartColor(colorVar.first);
             quad->setStartColorVar(colorVar.second);
         } 
-        else 
-        {
+        else {
             CCLayerGradient* layer = dynamic_cast<CCLayerGradient*>(node);
             CC_ASSERT(layer);
             layer->setStartColor(CCBJsonUtils::color3bFromValue(value));
         }
     } 
-    else if(nameHash == _hashStartOpacity) 
-    {
+    else if(nameHash == _hashStartOpacity) {
         CCLayerGradient* layer = dynamic_cast<CCLayerGradient*>(node);
         CC_ASSERT(layer);
         layer->setStartOpacity(static_cast<GLbyte>(value.asUInt()));
     }
-    else if(nameHash == _hashEndColor)
-    {
-        if(typeReading_ == kNodeTypeCCParticleSystemQuad)
-        {
+    else if(nameHash == _hashEndColor) {
+        if(typeReading_ == kNodeTypeCCParticleSystemQuad) {
             CCParticleSystemQuad* quad = dynamic_cast<CCParticleSystemQuad*>(node);
             CC_ASSERT(quad);
             std::pair<ccColor4F,ccColor4F> colorVar = CCBJsonUtils::color4fVarFromValue(value);
             quad->setEndColor(colorVar.first);
             quad->setEndColorVar(colorVar.second);
         }
-        else
-        {
+        else {
             CCLayerGradient* layer = dynamic_cast<CCLayerGradient*>(node);
             CC_ASSERT(layer);
             layer->setEndColor(CCBJsonUtils::color3bFromValue(value));
         }
     } 
-    else if(nameHash == _hashEndOpacity) 
-    {
+    else if(nameHash == _hashEndOpacity) {
         CCLayerGradient* layer = dynamic_cast<CCLayerGradient*>(node);
         CC_ASSERT(layer);
         layer->setEndOpacity(static_cast<GLbyte>(value.asUInt()));
     } 
-    else if(nameHash == _hashVector)
-    {
+    else if(nameHash == _hashVector) {
         CCLayerGradient* layer = dynamic_cast<CCLayerGradient*>(node);
         CC_ASSERT(layer);
         layer->setVector(CCBJsonUtils::pointFromValue(value));
     } 
-    else if(nameHash == _hashEmitterMode) 
-    {
+    else if(nameHash == _hashEmitterMode) {
         CCParticleSystemQuad* quad = dynamic_cast<CCParticleSystemQuad*>(node);
         CC_ASSERT(quad);
         quad->setEmitterMode(value.asInt());
     } 
-    else if(nameHash == _hashPosVar) 
-    {
+    else if(nameHash == _hashPosVar) {
         CCParticleSystemQuad* quad = dynamic_cast<CCParticleSystemQuad*>(node);
         CC_ASSERT(quad);
         quad->setPosVar(CCBJsonUtils::pointFromValue(value)); 
     } 
-    else if(nameHash == _hashEmissionRate) 
-    {
+    else if(nameHash == _hashEmissionRate) {
         CCParticleSystemQuad* quad = dynamic_cast<CCParticleSystemQuad*>(node);
         CC_ASSERT(quad);
         quad->setEmissionRate(value.asFloat());
     }
-    else if(nameHash == _hashDuration) 
-    {
+    else if(nameHash == _hashDuration) {
         CCParticleSystemQuad* quad = dynamic_cast<CCParticleSystemQuad*>(node);
         CC_ASSERT(quad);
         quad->setDuration(value.asFloat());
     } 
     else if(nameHash == _hashTotalParticles) { } 
-    else if(nameHash == _hashLife) 
-    {
+    else if(nameHash == _hashLife) {
         CCParticleSystemQuad* quad = dynamic_cast<CCParticleSystemQuad*>(node);
         CC_ASSERT(quad);
         std::pair<float, float> floatVar = CCBJsonUtils::floatVarFromValue(value);
         quad->setLife(floatVar.first);
         quad->setLifeVar(floatVar.second);
     }
-    else if(nameHash == _hashStartSize) 
-    {
+    else if(nameHash == _hashStartSize) {
         CCParticleSystemQuad* quad = dynamic_cast<CCParticleSystemQuad*>(node);
         CC_ASSERT(quad);
         std::pair<float, float> floatVar = CCBJsonUtils::floatVarFromValue(value);
         quad->setStartSize(floatVar.first);
         quad->setStartSizeVar(floatVar.second);
     }
-    else if(nameHash == _hashEndSize)
-    {
+    else if(nameHash == _hashEndSize) {
         CCParticleSystemQuad* quad = dynamic_cast<CCParticleSystemQuad*>(node);
         CC_ASSERT(quad);
         std::pair<float, float> floatVar = CCBJsonUtils::floatVarFromValue(value);
         quad->setEndSize(floatVar.first);
         quad->setEndSizeVar(floatVar.second);
     } 
-    else if(nameHash == _hashStartSpin) 
-    {
+    else if(nameHash == _hashStartSpin) {
         CCParticleSystemQuad* quad = dynamic_cast<CCParticleSystemQuad*>(node);
         CC_ASSERT(quad);
         std::pair<float, float> floatVar = CCBJsonUtils::floatVarFromValue(value);
         quad->setStartSpin(floatVar.first);
         quad->setStartSpinVar(floatVar.second);
     }
-    else if(nameHash == _hashEndSpin) 
-    {
+    else if(nameHash == _hashEndSpin) {
         CCParticleSystemQuad* quad = dynamic_cast<CCParticleSystemQuad*>(node);
         CC_ASSERT(quad);
         std::pair<float, float> floatVar = CCBJsonUtils::floatVarFromValue(value);
         quad->setEndSpin(floatVar.first);
         quad->setEndSpinVar(floatVar.second);
     }
-    else if(nameHash == _hashAngle) 
-    {
+    else if(nameHash == _hashAngle) {
         CCParticleSystemQuad* quad = dynamic_cast<CCParticleSystemQuad*>(node);
         CC_ASSERT(quad);
         std::pair<float, float> floatVar = CCBJsonUtils::floatVarFromValue(value);
         quad->setAngle(floatVar.first);
         quad->setAngleVar(floatVar.second);
     } 
-    else if(nameHash == _hashGravity) 
-    {
+    else if(nameHash == _hashGravity) {
         CCParticleSystemQuad* quad = dynamic_cast<CCParticleSystemQuad*>(node);
         CC_ASSERT(quad);
         quad->setGravity(CCBJsonUtils::pointFromValue(value));
     }
-    else if(nameHash == _hashSpeed)
-    {
+    else if(nameHash == _hashSpeed) {
         CCParticleSystemQuad* quad = dynamic_cast<CCParticleSystemQuad*>(node);
         CC_ASSERT(quad);
         std::pair<float, float> floatVar = CCBJsonUtils::floatVarFromValue(value);
         quad->setSpeed(floatVar.first);
         quad->setSpeedVar(floatVar.second);
     }
-    else if(nameHash == _hashTangentialAccel) 
-    {
+    else if(nameHash == _hashTangentialAccel) {
         CCParticleSystemQuad* quad = dynamic_cast<CCParticleSystemQuad*>(node);
         CC_ASSERT(quad);
         std::pair<float, float> floatVar = CCBJsonUtils::floatVarFromValue(value);
         quad->setTangentialAccel(floatVar.first);
         quad->setTangentialAccelVar(floatVar.second);
     }
-    else if(nameHash == _hashRadialAccel) 
-    {
+    else if(nameHash == _hashRadialAccel) {
         CCParticleSystemQuad* quad = dynamic_cast<CCParticleSystemQuad*>(node);
         CC_ASSERT(quad);
         std::pair<float, float> floatVar = CCBJsonUtils::floatVarFromValue(value);
         quad->setRadialAccel(floatVar.first);
         quad->setRadialAccelVar(floatVar.second);
     }
-    else if(nameHash == _hashTexture)
-    {
+    else if(nameHash == _hashTexture) {
         CCParticleSystemQuad* quad = dynamic_cast<CCParticleSystemQuad*>(node);
         CC_ASSERT(quad);
         quad->setTexture(cocos2d::CCTextureCache::sharedTextureCache()->addImage(value.asString().c_str()));
@@ -512,8 +456,7 @@ void CCBJsonReader::readPropertyForNode(cocos2d::CCNode *node, const Json::Value
     else if(nameHash == _HashHorizontalAlignment) { } 
     else if(nameHash == _hashVerticalAlignment) { }
     else if(nameHash == _hashCCBFile) { }
-    else if(nameHash == _hashIsEnabled) 
-    {
+    else if(nameHash == _hashIsEnabled) {
         CCMenuItem* item = dynamic_cast<CCMenuItem*>(node);
         CC_ASSERT(item);
         item->setIsEnabled(value.asBool());
@@ -527,20 +470,17 @@ void CCBJsonReader::readPropertyForNode(cocos2d::CCNode *node, const Json::Value
 }
 
 
-CCSpriteFrame* CCBJsonReader::spriteFrameFromValue(const Json::Value &value)
-{
+CCSpriteFrame* CCBJsonReader::spriteFrameFromValue(const Json::Value &value) {
     std::pair<std::string, std::string> displayFrame = CCBJsonUtils::displayFrameFromValue(value);
     
     CCSpriteFrame* frame = NULL;
-    if(displayFrame.first.empty())
-    {
+    if(displayFrame.first.empty()) {
         CCTexture2D* t = cocos2d::CCTextureCache::sharedTextureCache()->addImage(displayFrame.second.c_str());
         CCSize textContentSize = t->getContentSize();
         CCRect textRect = cocos2d::CCRectMake(0, 0, textContentSize.width, textContentSize.height);
         frame = CCSpriteFrame::frameWithTexture(t, textRect);
     } 
-    else
-    {
+    else {
         CCSpriteFrameCache* cache = cocos2d::CCSpriteFrameCache::sharedSpriteFrameCache();
         cache->addSpriteFramesWithFile(displayFrame.first.c_str());
         frame = cache->spriteFrameByName(displayFrame.second.c_str());
@@ -550,13 +490,11 @@ CCSpriteFrame* CCBJsonReader::spriteFrameFromValue(const Json::Value &value)
     return frame;
 }
 
-CCSprite* CCBJsonReader::spriteFromValue(const Json::Value &value) 
-{
+CCSprite* CCBJsonReader::spriteFromValue(const Json::Value &value) {
     CCSprite* sprite = new CCSprite;
     if(sprite && sprite->init())
         sprite->autorelease();
-    else
-    {
+    else {
         delete sprite;
         sprite = NULL;
     }
@@ -564,17 +502,14 @@ CCSprite* CCBJsonReader::spriteFromValue(const Json::Value &value)
 }
 
 
-CCParticleSystemQuad* CCBJsonReader::particleSystemFromValue(const Json::Value &value)
-{
-    
+CCParticleSystemQuad* CCBJsonReader::particleSystemFromValue(const Json::Value &value) {
     Value totalParticles = findPropertyByName(value["properties"], "totalParticles");
     CC_ASSERT(!totalParticles.isNull());
     
     CCParticleSystemQuad* particles = new CCParticleSystemQuad;
     if(particles && particles->initWithTotalParticles(totalParticles["value"].asUInt()))
         particles->autorelease();
-    else 
-    {
+    else {
         delete particles;
         particles = NULL;
     }
@@ -591,8 +526,7 @@ CCLabelBMFont* CCBJsonReader::labelBMFontFromValue(const Json::Value &value) {
     CC_ASSERT(!fntFile.isNull());
     
     Value string = findPropertyByName(properties, "string");
-    if(!fntFile.isNull()) 
-    {
+    if(!fntFile.isNull()) {
         font = CCLabelBMFont::labelWithString((!string.isNull()) ? string["value"].asString().c_str() : "", 
                                               fntFile["value"].asString().c_str());
     }
@@ -600,8 +534,7 @@ CCLabelBMFont* CCBJsonReader::labelBMFontFromValue(const Json::Value &value) {
 }
 
 
-CCLabelTTF* CCBJsonReader::labelTTFFromValue(const Json::Value &value)
-{
+CCLabelTTF* CCBJsonReader::labelTTFFromValue(const Json::Value &value) {
     CCLabelTTF* label = NULL;
 
     const Value& properties = value["properties"];
@@ -611,8 +544,7 @@ CCLabelTTF* CCBJsonReader::labelTTFFromValue(const Json::Value &value)
     Value dimensions = findPropertyByName(properties, "dimensions");
     Value alignment = findPropertyByName(properties, "horizontalAlignment");
     
-    if(!string.isNull() && !fontName.isNull() && !fontSize.isNull() && !dimensions.isNull()) 
-    {
+    if(!string.isNull() && !fontName.isNull() && !fontSize.isNull() && !dimensions.isNull()) {
         label = CCLabelTTF::labelWithString(string["value"].asString().c_str(), 
                                             CCBJsonUtils::sizeFromValue(dimensions["value"]), 
                                             static_cast<CCTextAlignment>(alignment["value"].asInt()), 
@@ -623,8 +555,7 @@ CCLabelTTF* CCBJsonReader::labelTTFFromValue(const Json::Value &value)
     return label;
 }
 
-CCNode* CCBJsonReader::ccbFileNodeFromValue(const Json::Value &value) 
-{
+CCNode* CCBJsonReader::ccbFileNodeFromValue(const Json::Value &value) {
     CCNode* node = NULL;
     
     Value ccbFile = findPropertyByName(value["properties"], "ccbFile");
@@ -634,8 +565,7 @@ CCNode* CCBJsonReader::ccbFileNodeFromValue(const Json::Value &value)
     return node;
 }
 
-CCMenuItemImage* CCBJsonReader::menuItemImageFromValue(const Json::Value &value)
-{
+CCMenuItemImage* CCBJsonReader::menuItemImageFromValue(const Json::Value &value) {
     CCMenuItemImage* item = NULL;
     
     const Value& properties = value["properties"];
@@ -655,20 +585,17 @@ CCMenuItemImage* CCBJsonReader::menuItemImageFromValue(const Json::Value &value)
     CCObject* target = NULL;
     SEL_MenuHandler handler = NULL;
     std::string selector = block["value"][0].asString();
-    if(!selector.empty())
-    {
+    if(!selector.empty()) {
         target = CCBJsonSelectorManager::sharedSelectorManager();
         handler = menu_selector(CCBJsonSelectorManager::defaultMenuHandler);
     }
     
     item = new CCMenuItemImage();
-    if(item && item->initFromNormalSprite(normalSprite, selectedSprite, disabledSprite, target, handler))
-    {
+    if(item && item->initFromNormalSprite(normalSprite, selectedSprite, disabledSprite, target, handler)) {
         CCBJsonRegisterMenuItem(item, selector);
         item->autorelease();
     } 
-    else
-    {
+    else {
         delete item;
         item = NULL;
     }
@@ -676,14 +603,11 @@ CCMenuItemImage* CCBJsonReader::menuItemImageFromValue(const Json::Value &value)
     return item;
 }
 
-Value CCBJsonReader::findPropertyByName(const Value &properties, const char* name) const 
-{
+Value CCBJsonReader::findPropertyByName(const Value &properties, const char* name) const {
     Value value;
-    for(ArrayIndex index = 0; index < properties.size(); ++index)
-    {
+    for(ArrayIndex index = 0; index < properties.size(); ++index) {
         const Value& property = properties[index];
-        if(!property["name"].asString().compare(name))
-        {
+        if(!property["name"].asString().compare(name)) {
             value = property;
             break;
         }
