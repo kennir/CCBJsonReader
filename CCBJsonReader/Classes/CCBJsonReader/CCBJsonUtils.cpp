@@ -100,7 +100,7 @@ bool CCBJsonUtils::getParentPath(const std::string &fullname,std::string& parent
     bool found = false;
     std::string::size_type pos = fullname.rfind('/');
     if(pos != std::string::npos) {
-        parent = fullname.substr(0,pos);
+        parent = fullname.substr(0,pos + 1);
         found = true;
     }
     return found;
