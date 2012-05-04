@@ -62,13 +62,17 @@ protected:
     
     Json::Value findPropertyByName(const Json::Value& properties,const char* name) const;
     
+    std::string makePath(const std::string& fntFile) const {
+        return parentPath_ + fntFile;
+    }
+    
     
 protected:
     cocos2d::CCNode* nodeGraph_;
     
 private:
     NodeType typeReading_;
-
+    std::string parentPath_;
 };
 
 

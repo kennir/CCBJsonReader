@@ -33,6 +33,7 @@ public:
     static std::pair<cocos2d::ccColor4F,cocos2d::ccColor4F> color4fVarFromValue(const Json::Value& value);
     static cocos2d::ccColor4F color4fFromValue(const Json::Value& value);
     static unsigned int hashFromString(const char* string);
+    static bool getParentPath(const std::string& fullname,std::string& parent);
 };
 
 #endif

@@ -134,6 +134,10 @@ bool CCBJsonReader::initWithFile(const char *file) {
         std::string ccbExt("ccb");
         if(fullPath.compare(fullPath.size() - ccbExt.size(), ccbExt.size(), ccbExt) == 0)
             fullPath += "json";
+        
+        // get parent path
+        CCBJsonUtils::getParentPath(fullPath, parentPath_);
+        CCLOG("parentPath_:%s",parentPath_.c_str());
 
         Value value;
         CC_BREAK_IF(!CCBJsonUtils::valueFromFile(fullPath.c_str(), value));
@@ -475,14 +479,14 @@ CCSpriteFrame* CCBJsonReader::spriteFrameFromValue(const Json::Value &value) {
     
     CCSpriteFrame* frame = NULL;
     if(displayFrame.first.empty()) {
-        CCTexture2D* t = cocos2d::CCTextureCache::sharedTextureCache()->addImage(displayFrame.second.c_str());
+        CCTexture2D* t = cocos2d::CCTextureCache::sharedTextureCache()->addImage(makePath(displayFrame.second).c_str());
         CCSize textContentSize = t->getContentSize();
         CCRect textRect = cocos2d::CCRectMake(0, 0, textContentSize.width, textContentSize.height);
         frame = CCSpriteFrame::frameWithTexture(t, textRect);
     } 
     else {
         CCSpriteFrameCache* cache = cocos2d::CCSpriteFrameCache::sharedSpriteFrameCache();
-        cache->addSpriteFramesWithFile(displayFrame.first.c_str());
+        cache->addSpriteFramesWithFile(makePath(displayFrame.first).c_str());
         frame = cache->spriteFrameByName(displayFrame.second.c_str());
     }
     CC_ASSERT(frame);
@@ -528,7 +532,7 @@ CCLabelBMFont* CCBJsonReader::labelBMFontFromValue(const Json::Value &value) {
     Value string = findPropertyByName(properties, "string");
     if(!fntFile.isNull()) {
         font = CCLabelBMFont::labelWithString((!string.isNull()) ? string["value"].asString().c_str() : "", 
-                                              fntFile["value"].asString().c_str());
+                                              makePath(fntFile["value"].asString()).c_str());
     }
     return font;
 }
@@ -560,7 +564,7 @@ CCNode* CCBJsonReader::ccbFileNodeFromValue(const Json::Value &value) {
     
     Value ccbFile = findPropertyByName(value["properties"], "ccbFile");
     if(!ccbFile.isNull()) 
-        node = CCBJsonReader::nodeGraphFromFile(ccbFile["value"].asString().c_str());
+        node = CCBJsonReader::nodeGraphFromFile(makePath(ccbFile["value"].asString()).c_str());
 
     return node;
 }

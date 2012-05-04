@@ -96,3 +96,14 @@ ccColor4F CCBJsonUtils::color4fFromValue(const Json::Value &value) {
     return color;
 }
 
+bool CCBJsonUtils::getParentPath(const std::string &fullname,std::string& parent) {    
+    bool found = false;
+    std::string::size_type pos = fullname.rfind('/');
+    if(pos != std::string::npos) {
+        parent = fullname.substr(0,pos);
+        found = true;
+    }
+    return found;
+}
+
+
